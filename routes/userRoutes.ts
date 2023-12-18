@@ -18,6 +18,7 @@ userRouter.get(
   "/dashboard",
   isAuthenticated,
   async (req: Request, res: Response) => {
+    
     res
       .json({
         message: "User dashboard route!",
