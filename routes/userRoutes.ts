@@ -26,8 +26,8 @@ userRouter.get(
   }
 );
 
-userRouter.route("/login").post(signInUser);
+userRouter.post("/login", signInUser);
 
-userRouter.route("/register").post(createUser);
+userRouter.post("/register", createUser);
 
 export default userRouter;

@@ -15,6 +15,8 @@ app.use(
     methods: ["GET", "POST"],
   })
 );
+
+app.use(express.json());
 app.use("/auth", userRouter);
 
 const port = process.env.PORT || 3000;

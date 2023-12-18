@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 // import User from "../lib/models/userModel";
 
 const signInUser = async (req: Request, res: Response) => {
-  const { email, password } = await req.body;
+  const { email, password } = req.body;
 
   return res.status(200).json({
     message: "Account login successfully!",
