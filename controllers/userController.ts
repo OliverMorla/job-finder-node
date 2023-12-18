@@ -35,8 +35,6 @@ const signInUser = async (req: Request, res: Response) => {
         avatar: user.avatar,
       },
     });
-
-    
   } catch (err) {}
 };
 
@@ -56,6 +54,10 @@ const createUser = async (req: Request, res: Response) => {
       message: "Please fill out all required fields!",
     });
   }
+
+  return res.status(200).json({
+    message: "Account created successfully!",
+  });
 
   // const hashedPassword = bcrypt.hash(
   //   password,
