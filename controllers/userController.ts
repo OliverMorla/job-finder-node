@@ -1,11 +1,22 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
+
+import { connectDB } from "../lib/db";
 import User from "../lib/models/userModel";
 
 const signInUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
+  if (email === "" || password === "") {
+    return res.status(400).json({
+      ok: false,
+      message: "Please fill in all fields!",
+    });
+  }
+
   try {
+    await connectDB();
+
     const user = await User.findOne({
       email: email,
     });
@@ -63,33 +74,34 @@ const createUser = async (req: Request, res: Response) => {
   }
 
   try {
-    bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS), async (err, hash) => {
-      if (err) {
-        return res.status(500).json({
-          ok: false,
-          message: "Failed to hash password!",
-          error: err instanceof Error ? err.message : null,
-        });
-      }
+    await connectDB();
 
-      const newUser = await User.create({
-        displayName,
-        email,
-        password: hash,
-      });
+    bcrypt.hash(
+      password,
+      parseInt(process.env.SALT_ROUNDS),
+      async (err, hash) => {
+        if (err) {
+          return res.status(500).json({
+            ok: false,
+            message: "Failed to hash password!",
+            error: err instanceof Error ? err.message : null,
+          });
+        }
 
-      if (newUser) {
-        return res.status(201).json({
-          ok: true,
-          message: "User created successfully!",
-          user: {
-            displayName: newUser.displayName,
-            email: newUser.email,
-            avatar: newUser.avatar,
-          },
+        const newUser = await User.create({
+          displayName,
+          email,
+          password: hash,
         });
+
+        if (newUser) {
+          return res.status(201).json({
+            ok: true,
+            message: "User created successfully!",
+          });
+        }
       }
-    });
+    );
   } catch (err) {
     return res.status(500).json({
       ok: false,
