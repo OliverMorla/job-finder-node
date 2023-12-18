@@ -63,7 +63,7 @@ const createUser = async (req: Request, res: Response) => {
   }
 
   try {
-    bcrypt.hash(password, process.env.SALT_ROUNDS, async (err, hash) => {
+    bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS), async (err, hash) => {
       if (err) {
         return res.status(500).json({
           ok: false,
