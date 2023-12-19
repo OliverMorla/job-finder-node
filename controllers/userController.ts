@@ -111,8 +111,8 @@ const createUser = async (req: Request, res: Response) => {
   }
 };
 
-const deleteUser = async () => {};
+const deleteUser = async (req: Request, res: Response) => {};
 
-const getUserByID = async () => {};
+const getUserByID = async (req: Request, res: Response) => {};
 
 export { signInUser, createUser, deleteUser, getUserByID };
