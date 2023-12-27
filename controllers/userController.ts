@@ -65,6 +65,7 @@ const signInUser = async (req: Request, res: Response) => {
         displayName: user.displayName,
         email: user.email,
         avatar: user.avatar,
+        id: user._id,
       },
     });
   } catch (err) {
@@ -187,6 +188,7 @@ const getUserByID = async (req: Request, res: Response) => {
         displayName: user.displayName,
         email: user.email,
         avatar: user.avatar,
+        id: user._id,
       },
     });
   } catch (err) {
