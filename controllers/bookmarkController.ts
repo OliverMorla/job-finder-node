@@ -120,4 +120,38 @@ const removeFromBookmark = async (req: Request, res: Response) => {
   }
 };
 
-export { addToBookmark, removeFromBookmark };
+const getBookmarks = async (req: Request, res: Response) => {
+  const { userId } = req.body as BookmarkRequest;
+
+  try {
+    // Connect to database
+    await connectDB();
+
+    // Get user's bookmarks
+    const user = await User.findById(userId);
+
+    // If user not found, return error
+    if (!user) {
+      return res.status(400).json({
+        ok: false,
+        message: "User not found",
+      });
+    }
+
+    // Return success message if bookmarks fetched successfully
+    return res.status(200).json({
+      ok: true,
+      message: "Bookmarks fetched successfully!",
+      bookmarks: user.bookmarks,
+    });
+  } catch (err) {
+    console.error(err); // Log error
+    return res.status(500).json({
+      ok: false,
+      message: "Internal server error",
+      error: err instanceof Error ? err.message : null,
+    });
+  }
+};
+
+export { addToBookmark, removeFromBookmark, getBookmarks };
