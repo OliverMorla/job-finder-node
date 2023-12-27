@@ -1,22 +1,30 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 import dotenv from "dotenv";
 
+// dotenv.config will read the .env file and assign the variables to process.env
 dotenv.config();
 
-const connectDB = async () => {
+let isConnected = false;
+
+const connectDB = async (): Promise<void> => {
   mongoose.set("strictQuery", true);
-  let isConnected = false;
+
+  if (isConnected) {
+    console.log("=> using existing database connection");
+    return;
+  }
 
   if (!process.env.MONGO_URI) {
-    return console.log("=> Couldn't find MONGO_URI");
+    console.log("=> Couldn't find MONGO_URI");
+    return;
   }
 
   try {
-    mongoose.connect(process.env.MONGO_URI);
+    await mongoose.connect(process.env.MONGO_URI);
     isConnected = true;
     console.log("=> Connected to DB");
   } catch (err) {
-    console.log(err instanceof Error && `=> ${err.message}`);
+    console.error(err instanceof Error && `=> ${err.message}`);
     isConnected = false;
   }
 };

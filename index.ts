@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import { connectDB } from "./lib/db";
 
 import userRouter from "./routes/userRoutes";
+import bookmarkRouter from "./routes/bookmarkRoutes";
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.use(
 
 app.use(express.json());
 app.use("/auth", userRouter);
+app.use("/auth/bookmark",  bookmarkRouter);
 
 const port = process.env.PORT || 3000;
 
